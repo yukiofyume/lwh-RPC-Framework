@@ -2,6 +2,7 @@ package com.lwh.test.server;
 
 import com.lwh.api.HelloObject;
 import com.lwh.api.HelloService;
+import com.lwh.common.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author lwh
  * @date 2021年08月24日
  */
+@Service
 public class HelloServiceImpl implements HelloService {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloServiceImpl.class);
