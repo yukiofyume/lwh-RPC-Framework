@@ -1,6 +1,7 @@
 package com.lwh.core.transport;
 
 import com.lwh.common.entity.RpcRequest;
+import com.lwh.core.serializer.CommonSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,5 +16,7 @@ import java.net.Socket;
  */
 public interface RpcClient {
     Object sendRequest(RpcRequest rpcRequest);
+
+    void setSerializer(CommonSerializer serializer);
 }
 

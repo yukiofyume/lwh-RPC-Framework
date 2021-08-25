@@ -61,5 +61,4 @@ public class ProtobufSerializer implements CommonSerializer {
         }
         return schema;
     }
-
 }

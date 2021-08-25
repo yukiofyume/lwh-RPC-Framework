@@ -1,10 +1,9 @@
-package com.lwh.core.registry.impl;
+package com.lwh.core.provider;
 
 import com.lwh.common.enumeration.RpcError;
 import com.lwh.common.exception.RpcException;
-import com.lwh.core.registry.ServiceRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.protostuff.Rpc;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Set;
@@ -12,17 +11,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author lwh
- * @date 2021年08月24日
+ * @date 2021年08月25日
+ * 默认的服务注册表，保存服务端本地服务
  */
-public class DefaultServiceRegistryImpl implements ServiceRegistry {
+@Slf4j
+public class ServiceProviderImpl implements ServiceProvider{
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultServiceRegistryImpl.class);
 
     private static final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
+
     private static final Set<String> registeredService = ConcurrentHashMap.newKeySet();
 
     @Override
-    public synchronized <T> void register(T service) {
+    public <T> void addServiceProvider(T service) {
         String serviceName = service.getClass().getCanonicalName();
         if (registeredService.contains(serviceName)) return;
         registeredService.add(serviceName);
@@ -30,14 +31,15 @@ public class DefaultServiceRegistryImpl implements ServiceRegistry {
         if (interfaces.length == 0) {
             throw new RpcException(RpcError.SERVICE_NOT_IMPLEMENT_ANY_INTERFACE);
         }
-        for (Class<?> i : interfaces) {
+        for (Class<?> i: interfaces) {
             serviceMap.put(i.getCanonicalName(), service);
         }
-        logger.info("向接口: {} 注册服务: {}", interfaces, serviceName);
+        log.info("向接口: {} 注册服务: {}", interfaces, serviceName);
     }
 
     @Override
-    public synchronized Object getService(String serviceName) {
+    public Object getServiceProvider(String serviceName) {
+        Boolean b = serviceMap.containsKey(serviceName);
         Object service = serviceMap.get(serviceName);
         if (service == null) {
             throw new RpcException(RpcError.SERVICE_NOT_FOUND);

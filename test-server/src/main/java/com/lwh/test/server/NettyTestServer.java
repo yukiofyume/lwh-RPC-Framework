@@ -1,7 +1,7 @@
 package com.lwh.test.server;
 
-import com.lwh.core.registry.ServiceRegistry;
-import com.lwh.core.registry.impl.DefaultServiceRegistryImpl;
+import com.lwh.api.HelloService;
+import com.lwh.core.serializer.ProtobufSerializer;
 import com.lwh.core.transport.netty.server.NettyServer;
 
 /**
@@ -10,10 +10,9 @@ import com.lwh.core.transport.netty.server.NettyServer;
  */
 public class NettyTestServer {
     public static void main(String[] args) {
-        HelloServiceImpl service = new HelloServiceImpl();
-        ServiceRegistry registry = new DefaultServiceRegistryImpl();
-        registry.register(service);
-        NettyServer nettyServer = new NettyServer();
-        nettyServer.start(9999);
+        HelloService helloService = new HelloServiceImpl();
+        NettyServer server = new NettyServer("127.0.0.1", 9999);
+        server.setSerializer(new ProtobufSerializer());
+        server.publishService(helloService, HelloService.class);
     }
 }
