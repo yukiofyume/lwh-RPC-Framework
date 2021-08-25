@@ -18,8 +18,8 @@ public class DefaultServiceRegistryImpl implements ServiceRegistry {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultServiceRegistryImpl.class);
 
-    private final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
-    private final Set<String> registeredService = ConcurrentHashMap.newKeySet();
+    private static final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
+    private static final Set<String> registeredService = ConcurrentHashMap.newKeySet();
 
     @Override
     public synchronized <T> void register(T service) {

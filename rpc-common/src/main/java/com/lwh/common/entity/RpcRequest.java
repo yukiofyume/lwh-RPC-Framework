@@ -3,7 +3,7 @@ package com.lwh.common.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import java.io.Serializable;
 
@@ -13,7 +13,10 @@ import java.io.Serializable;
  */
 @Data
 @Builder
+@AllArgsConstructor
 public class RpcRequest implements Serializable {
+
+    public RpcRequest(){}
 
     /**
      * 待调用接口名称

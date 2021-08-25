@@ -5,14 +5,13 @@ import lombok.Getter;
 
 /**
  * @author lwh
- * @date 2021年08月24日
+ * @date 2021年08月25日
  */
 @AllArgsConstructor
 @Getter
-public enum SerializerCode {
-    KRYO(0),
-    JSON(1),
-    HESSIAN(2),
-    PROTOBUF(3);
+public enum PackageType {
+    REQUEST_PACK(0),
+    RESPONSE_PACK(1);
+
     private final int code;
 }
