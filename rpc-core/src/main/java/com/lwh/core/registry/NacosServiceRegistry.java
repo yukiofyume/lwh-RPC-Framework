@@ -1,4 +1,4 @@
-package com.lwh.core.registry.impl;
+package com.lwh.core.registry;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;

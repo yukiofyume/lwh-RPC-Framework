@@ -6,7 +6,7 @@ import com.lwh.common.enumeration.RpcError;
 import com.lwh.common.exception.RpcException;
 import com.lwh.common.util.RpcMessageChecker;
 import com.lwh.core.registry.ServiceRegistry;
-import com.lwh.core.registry.impl.NacosServiceRegistry;
+import com.lwh.core.registry.NacosServiceRegistry;
 import com.lwh.core.serializer.CommonSerializer;
 import com.lwh.core.transport.RpcClient;
 import io.netty.bootstrap.Bootstrap;

@@ -2,8 +2,9 @@ package com.lwh.core.transport.netty.server;
 
 import com.lwh.core.codec.CommonDecoder;
 import com.lwh.core.codec.CommonEncoder;
+import com.lwh.core.hook.ShutdownHook;
 import com.lwh.core.provider.ServiceProviderImpl;
-import com.lwh.core.registry.impl.NacosServiceRegistry;
+import com.lwh.core.registry.NacosServiceRegistry;
 import com.lwh.core.serializer.CommonSerializer;
 import com.lwh.core.serializer.KryoSerializer;
 import com.lwh.core.transport.AbstractRpcServer;
@@ -62,6 +63,7 @@ public class NettyServer extends AbstractRpcServer {
                         }
                     });
             ChannelFuture future = serverBootstrap.bind(host, port).sync();
+            ShutdownHook.getShutdownHook().addClearAllHook();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("启动服务器时有错误发生：", e);
