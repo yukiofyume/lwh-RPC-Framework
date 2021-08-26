@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * Rpc调用错误
  * @author lwh
  * @date 2021年08月24日
  */

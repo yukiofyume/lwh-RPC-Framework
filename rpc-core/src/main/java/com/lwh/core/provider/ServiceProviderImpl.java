@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2021年08月25日
  * 默认的服务注册表，保存服务端本地服务
  */
-@Slf4j
+
 public class ServiceProviderImpl implements ServiceProvider {
 
 
@@ -27,7 +27,7 @@ public class ServiceProviderImpl implements ServiceProvider {
         if (registeredService.contains(serviceName)) return;
         registeredService.add(serviceName);
         serviceMap.put(serviceName, service);
-        log.info("向接口：{} 注册服务：{}", service.getClass().getInterfaces(), serviceName);
+        logger.info("向接口：{} 注册服务：{}", service.getClass().getInterfaces(), serviceName);
     }
 
     @Override

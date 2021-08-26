@@ -10,15 +10,20 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 
 /**
+ * Netty中处理RpcRequest的handler
  * @author lwh
  * @date 2021年08月25日
  */
-@Slf4j
+
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
+
+    private static final Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
 
     private static RequestHandler requestHandler;
     private static final String THREAD_NAME_PREFIX = "netty-server-handler";
@@ -33,7 +38,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) throws Exception {
         threadPool.execute(() -> {
             try {
-                log.info("服务器接收到请求: {}", msg);
+                logger.info("服务器接收到请求: {}", msg);
                 Object result = requestHandler.handle(msg);
                 ChannelFuture future = ctx.writeAndFlush(RpcResponse.success(result, msg.getRequestId()));
                 future.addListener(ChannelFutureListener.CLOSE);
@@ -45,7 +50,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("处理过程调用时有错误发生:");
+        logger.error("处理过程调用时有错误发生:");
         cause.printStackTrace();
         ctx.close();
     }

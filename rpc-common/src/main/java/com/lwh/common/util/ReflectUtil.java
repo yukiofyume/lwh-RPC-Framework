@@ -13,6 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
+ * 用于扫描包
  * @author lwh
  * @date 2021年08月25日
  */
@@ -23,6 +24,11 @@ public class ReflectUtil {
         return stack[stack.length - 1].getClassName();
     }
 
+    /**
+     * 传入一个包名，扫描该包及其子包下的所有类
+     * @param packageName
+     * @return
+     */
     public static Set<Class<?>> getClasses(String packageName) {
         Set<Class<?>> classes = new LinkedHashSet<>();
         boolean recursive = true;

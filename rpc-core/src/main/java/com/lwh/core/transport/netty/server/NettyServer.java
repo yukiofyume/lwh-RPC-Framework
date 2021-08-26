@@ -15,14 +15,14 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
+ * Netty服务端
+ *
  * @author lwh
  * @date 2021年08月25日
  */
-@Slf4j
 public class NettyServer extends AbstractRpcServer {
 
     private final CommonSerializer serializer;
@@ -40,23 +40,34 @@ public class NettyServer extends AbstractRpcServer {
         scanServices();
     }
 
+    /**
+     * 开启服务
+     */
     @Override
     public void start() {
+        // 主线程组，用于接收客户端请求
         EventLoopGroup bossGroup = new NioEventLoopGroup();
+        // 从线程组，处理主线程组发过来的任务
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-
         try {
+            // 创建Netty服务器
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
+                    // 基于TCP/IP协议，256是临时存放三次握手的请求队列的长度
                     .option(ChannelOption.SO_BACKLOG, 256)
-                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    // 保持长连接，这个版本需要使用childOption去设置
+//                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    // 设置低延迟
                     .childOption(ChannelOption.TCP_NODELAY, true)
+                    // 初始化通信管道
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
+                            // 设置编码方式
                             pipeline.addLast(new CommonEncoder(new KryoSerializer()));
                             pipeline.addLast(new CommonDecoder());
                             pipeline.addLast(new NettyServerHandler());
@@ -66,7 +77,7 @@ public class NettyServer extends AbstractRpcServer {
             ShutdownHook.getShutdownHook().addClearAllHook();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            log.error("启动服务器时有错误发生：", e);
+            logger.error("启动服务器时有错误发生：", e);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 选择序列化方式
  * @author lwh
  * @date 2021年08月24日
  */

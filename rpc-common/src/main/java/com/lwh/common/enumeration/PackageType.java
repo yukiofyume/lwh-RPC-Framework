@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 判断是请求包还是响应包
  * @author lwh
  * @date 2021年08月25日
  */

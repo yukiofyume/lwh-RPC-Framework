@@ -14,10 +14,11 @@ import java.net.InetSocketAddress;
 import java.util.Set;
 
 /**
+ * 用于服务端扫描服务
  * @author lwh
  * @date 2021年08月25日
  */
-@Slf4j
+
 public abstract class AbstractRpcServer implements RpcServer{
 
     protected String host;
@@ -26,17 +27,22 @@ public abstract class AbstractRpcServer implements RpcServer{
     protected ServiceRegistry serviceRegistry;
     protected ServiceProvider serviceProvider;
 
+    /**
+     * 扫描服务
+     */
     public void scanServices() {
+        // 主启动类在调用栈的栈顶
         String mainClassName = ReflectUtil.getStackTrace();
         Class<?> startClass;
         try {
             startClass = Class.forName(mainClassName);
+            // 判断是否存在相应注解
             if (!startClass.isAnnotationPresent(ServiceScan.class)) {
-                log.error("启动类缺少 @ServiceScan 注解");
+                logger.error("启动类缺少 @ServiceScan 注解");
                 throw new RpcException(RpcError.SERVICE_SCAN_PACKAGE_NOT_FOUND);
             }
         } catch (ClassNotFoundException e) {
-            log.error("出现未知错误");
+            logger.error("出现未知错误");
             throw new RpcException(RpcError.UNKNOWN_ERROR);
         }
 
@@ -52,7 +58,7 @@ public abstract class AbstractRpcServer implements RpcServer{
                 try {
                     obj = clazz.newInstance();
                 } catch (InstantiationException | IllegalAccessException e) {
-                   log.error("创建 " + clazz +" 时有错误发生");
+                   logger.error("创建 " + clazz +" 时有错误发生");
                    continue;
                 }
                 if ("".equals(serviceName)) {
@@ -68,6 +74,12 @@ public abstract class AbstractRpcServer implements RpcServer{
         }
     }
 
+    /**
+     * 发布服务到服务端
+     * @param service
+     * @param serviceName
+     * @param <T>
+     */
     @Override
     public <T> void publishService(T service, String serviceName) {
         serviceProvider.addServiceProvider(service, serviceName);

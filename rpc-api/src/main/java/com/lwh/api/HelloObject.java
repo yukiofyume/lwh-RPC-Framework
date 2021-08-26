@@ -9,6 +9,7 @@ import java.io.Serializable;
 /**
  * @author lwh
  * @date 2021年08月24日
+ * Hello服务模型
  */
 @Data
 @AllArgsConstructor

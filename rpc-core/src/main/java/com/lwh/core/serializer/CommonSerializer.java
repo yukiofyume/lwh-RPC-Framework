@@ -1,6 +1,7 @@
 package com.lwh.core.serializer;
 
 /**
+ * 序列化接口
  * @author lwh
  * @date 2021年08月24日
  */

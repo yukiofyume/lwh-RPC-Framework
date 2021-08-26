@@ -11,10 +11,11 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 /**
+ * 发现服务
  * @author lwh
  * @date 2021年08月25日
  */
-@Slf4j
+
 public class NacosServiceDiscovery implements ServiceDiscovery {
     private final LoadBalancer loadBalancer;
 
@@ -29,7 +30,7 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
             Instance instance = loadBalancer.select(instances);
             return new InetSocketAddress(instance.getIp(), instance.getPort());
         } catch (NacosException e) {
-            log.error("获取服务时有错误发生:", e);
+            logger.error("获取服务时有错误发生:", e);
         }
         return null;
     }

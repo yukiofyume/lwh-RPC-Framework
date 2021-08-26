@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
+ * 请求体
  * @author lwh
  * @date 2021年08月24日
  */

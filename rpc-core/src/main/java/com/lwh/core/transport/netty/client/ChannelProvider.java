@@ -12,16 +12,15 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.*;
 
 /**
+ * 用于获取Channel对象
  * @author lwh
  * @date 2021年08月25日
  */
@@ -34,11 +33,17 @@ public class ChannelProvider {
     private static final int MAX_RETRY_COUNT = 5;
     private static Channel channel = null;
 
+    /**
+     * 获取channel
+     * @param inetSocketAddress
+     * @param serializer
+     * @return
+     */
     public static Channel get(InetSocketAddress inetSocketAddress, CommonSerializer serializer) {
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) {
-                /*自定义序列化编解码器*/
+                // 自定义序列化编解码器
                 // RpcResponse -> ByteBuf
                 ch.pipeline().addLast(new CommonEncoder(serializer))
                         .addLast(new CommonDecoder())
@@ -95,5 +100,4 @@ public class ChannelProvider {
                 .option(ChannelOption.TCP_NODELAY, true);
         return bootstrap;
     }
-
 }

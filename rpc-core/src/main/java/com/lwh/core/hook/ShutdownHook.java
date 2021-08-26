@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * 用于手动注销注册到Nacos中的服务
  * @author lwh
  * @date 2021年08月25日
  */

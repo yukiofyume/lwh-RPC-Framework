@@ -3,6 +3,7 @@ package com.lwh.common.exception;
 import com.lwh.common.enumeration.RpcError;
 
 /**
+ * 异常处理类
  * @author lwh
  * @date 2021年08月24日
  */

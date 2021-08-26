@@ -11,12 +11,14 @@ import java.lang.reflect.Proxy;
 import java.util.UUID;
 
 /**
+ * 客户端代理类
  * @author lwh
  * @date 2021年08月24日
  */
-@Slf4j
+
 public class RpcClientProxy implements InvocationHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(RpcClientProxy.class);
 
     private final RpcClient client;
 
@@ -31,7 +33,7 @@ public class RpcClientProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        log.info("调用方法：{}#{}", method.getDeclaringClass().getName(), method.getName());
+        logger.info("调用方法：{}#{}", method.getDeclaringClass().getName(), method.getName());
         RpcRequest rpcRequest = new RpcRequest(UUID.randomUUID().toString(), method.getDeclaringClass().getName(),
                 method.getName(), args, method.getParameterTypes());
 

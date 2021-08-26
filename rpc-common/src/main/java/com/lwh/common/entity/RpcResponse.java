@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
+ * 响应体
  * @author lwh
  * @date 2021年08月24日
  */
